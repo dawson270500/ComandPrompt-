@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
+#include <fstream>
 #include <tuple>
 #include <map>
 #include "Func.h"
@@ -65,11 +66,28 @@ int main()
                 tuple<bool, size_t> firstCharHold = find(line, string(1, commandSplit));
                 if (get<0>(firstCharHold)) {
                     string printme = line.substr(get<1>(firstCharHold) + 1, line.size() - get<1>(firstCharHold));
-                    cout << printme << endl;
+                    tuple<bool, size_t> FilePrint = find(printme, string(1, commandSplit));
+                    if (get<0>(FilePrint)) { // We are printing to a file
+                        // Split for file and text to print
+                        string PrintMeToFile = printme.substr(0, get<1>(FilePrint));
+                        string FileToPrint = printme.substr(get<1>(FilePrint) + 1, printme.size() - get<1>(FilePrint));
+                        ofstream OutputFile; 
+                        // Open file, check its open
+                        OutputFile.open(FileToPrint, ios::app);
+                        if (OutputFile.is_open()) {
+                            OutputFile << PrintMeToFile << endl; // Write if its open, and add a newline 
+                            OutputFile.close();
+                        }
+                        else {
+                            cout << "Invalid file or permission denied"; // If not opened, file is invalid or we dont have perms
+                            OutputFile.close();
+                        }
+                    }
+                    else 
+                        cout << printme << endl; // Print to screen
                 }
-                else {
-                    cout << "Invalid Print command" << endl;
-                }
+                else 
+                    cout << "Invalid Print command" << endl; // Command was invalid
                 break;
             }
 
