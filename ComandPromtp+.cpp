@@ -6,6 +6,8 @@
 #include "Func.h"
 // my keyboard doesnt have a backslash so its here for me to copy \
 
+float version = 0.1;
+
 using namespace std;
 using namespace func;
 char my_current_path[1024] = "C:\\";
@@ -25,12 +27,12 @@ std::map<std::string, command> commandMap = {
     {"dir", dir}
 };
 
-// Used to split between command and 
+// Used to split between command and text for command to use or options
 constexpr char commandSplit = ';';
 
 int main()
 {
-    cout << "Command Prompt - Version Alpha 1" << endl;
+    cout << "Command Prompt - Version "<< version << endl;
     SetCurrentDirectory((string("C:/")).c_str());
     while (true) {
         cout << endl;
